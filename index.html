@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script type="text/javascript" src='config.js'></script>
+  <title>Kirby Geo</title>
+</head>
+<body>
+  <div id="formatted-address"></div>
+
+  <script>
+    // Call Geo
+    geo();
+
+    // Using axios to perform a get request
+    function geo() {
+      var location = config.LOC_KEY;
+      var apiKey = config.API_KEY;
+      axios.get('https://maps.googleapis.com/maps/api/geocode/json?', {
+        params: {
+          address: location,
+          key: apiKey
+        }
+      }).then(function(response){
+        // log full response in console
+        console.log(response);
+
+        // formatted address
+        // console.log(response.data.results[0].formatted_address);
+        var formattedAddress = response.data.results[0].formatted_address;
+        // store in a separate var with same var name
+        // to use a templated string for outputting in the webpage
+        var formattedAddressOutput = `
+          <ul class='list-group'>
+            <li class='list-group-item'>
+              ${formattedAddress}
+            </li>
+          </ul>
+        `;
+
+        // output to the actual web app
+        document.getElementById('formatted-address').innerHTML = formattedAddressOutput;
+      }).catch(function(error){
+        // log full error in console
+        console.log(error);
+      });
+    }
+  </script>
+</body>
+</html>
