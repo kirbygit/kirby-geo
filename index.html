@@ -10,7 +10,14 @@
   <title>Kirby Geo</title>
 </head>
 <body>
-  <div id="formatted-address"></div>
+  <div class="container">
+    <div id="formatted-address">
+
+    </div>
+    <div id="address-components">
+
+    </div>
+  </div>
 
   <script>
     // Call Geo
@@ -35,15 +42,28 @@
         // store in a separate var with same var name
         // to use a templated string for outputting in the webpage
         var formattedAddressOutput = `
-          <ul class='list-group'>
-            <li class='list-group-item'>
+          <ul class="list-group">
+            <li class="list-group-item">
               ${formattedAddress}
             </li>
           </ul>
         `;
 
+        // address components
+        var addressComponents = response.data.results[0].address_components;
+        var addressComponentsOutput = '<ul class="list-group">';
+        for (var i = 0; i < addressComponents.length; i++) {
+          addressComponentsOutput += `
+            <li class="list-group-item">
+              <strong>#{addressComponents[i].types[0]}</strong>: ${addressComponents[i].long_name}
+            </li>
+          `;
+        }
+        addressComponentsOutput += '</ul>';
+
         // output to the actual web app
         document.getElementById('formatted-address').innerHTML = formattedAddressOutput;
+        document.getElementById('address-components').innerHTML = addressComponentsOutput;
       }).catch(function(error){
         // log full error in console
         console.log(error);
