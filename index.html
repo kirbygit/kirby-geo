@@ -11,6 +11,12 @@
 </head>
 <body>
   <div class="container">
+    <h2 class="text-center">Enter Location</h2>
+    <form id="location-form">
+      <input type="text" id="location-input" class="form-control form-control-lg">
+    </form>
+    <button type="submit" class="btn btn-primary btn-block">Submit</button>
+    <br />
     <div class="card-block" id="formatted-address">
 
     </div>
@@ -27,11 +33,17 @@
 
   <script>
     // Call Geo
-    geo();
+    // geo();
+    var locationForm = document.getElementById('location-form');
+
+    // listen for submission formatted
+    locationForm.addEventListener('submit', geo);
 
     // Using axios to perform a get request
-    function geo() {
-      var location = config.LOC_KEY;
+    function geo(e) {
+      // prevent blinking when submissionß
+      e.preventDefault();
+      var location = document.getElementById('location-input').value;
       var apiKey = config.API_KEY;
       axios.get('https://maps.googleapis.com/maps/api/geocode/json?', {
         params: {
